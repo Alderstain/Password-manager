@@ -1,14 +1,37 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"math/rand/v2"
+	"net/url"
 )
 
 type account struct {
 	login    string
 	password string
 	url      string
+}
+
+func newAccount(login, password, urlString string) (*account, error) {
+	if login == "" {
+		return nil, errors.New("BLANK_LOGIN")
+	}
+	_, err := url.ParseRequestURI(urlString)
+	if err != nil {
+		return nil, errors.New("INVALID_URL")
+	}
+	newAcc := &account{
+		login:    login,
+		password: password,
+		url:      urlString,
+	}
+
+	if password == "" {
+		newAcc.generatePassword(12)
+	}
+
+	return newAcc, nil
 }
 
 func (acc *account) generatePassword(n int) {
@@ -21,13 +44,13 @@ func (acc *account) generatePassword(n int) {
 
 func main() {
 	newLogin := getData("Введите логин: ")
+	newPassword := getData("Введите пароль: ")
 	newUrl := getData("Введите url: ")
-	myAccount := account{
-		login: newLogin,
-		url:   newUrl,
+	myAccount, err := newAccount(newLogin, newPassword, newUrl)
+	if err != nil {
+		panic(err)
 	}
-	myAccount.generatePassword(12)
-	printMyData(&myAccount)
+	printMyData(myAccount)
 
 }
 
