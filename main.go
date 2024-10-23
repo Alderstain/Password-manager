@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"passwordManager/account"
-	"passwordManager/files"
 )
 
 func main() {
@@ -44,14 +43,11 @@ func createNewAccount() {
 	}
 	accountDB := account.NewAccountsDB()
 	accountDB.AddAccount(*myAccount)
-	file, err := accountDB.ToBytes()
-	if err != nil {
-		panic(err)
-	}
-	files.WriteToFile(file, "data.json")
 }
 
 func findAccount() {
+	//вывести аккаунты по url
+	//юзать strings.Contain()
 }
 
 func deleteAccount() {

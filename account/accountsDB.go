@@ -27,6 +27,11 @@ func NewAccountsDB() *AccountsDB {
 
 func (accDB *AccountsDB) AddAccount(acc Account) {
 	accDB.Accounts = append(accDB.Accounts, acc)
+	file, err := accDB.ToBytes()
+	if err != nil {
+		panic(err)
+	}
+	files.WriteToFile(file, "data.json")
 }
 
 func (accDB *AccountsDB) ToBytes() ([]byte, error) {
