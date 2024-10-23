@@ -6,13 +6,13 @@ import (
 	"net/url"
 )
 
-type account struct {
-	login    string
-	password string
-	url      string
+type Account struct {
+	Login    string `json:"login"`
+	Password string `json:"password"`
+	Url      string `json:"url"`
 }
 
-func NewAccount(login, password, urlString string) (*account, error) {
+func NewAccount(login, password, urlString string) (*Account, error) {
 	if login == "" {
 		return nil, errors.New("BLANK_LOGIN")
 	}
@@ -20,10 +20,10 @@ func NewAccount(login, password, urlString string) (*account, error) {
 	if err != nil {
 		return nil, errors.New("INVALID_URL")
 	}
-	newAcc := &account{
-		login:    login,
-		password: password,
-		url:      urlString,
+	newAcc := &Account{
+		Login:    login,
+		Password: password,
+		Url:      urlString,
 	}
 
 	if password == "" {
@@ -33,10 +33,10 @@ func NewAccount(login, password, urlString string) (*account, error) {
 	return newAcc, nil
 }
 
-func (acc *account) generatePassword(n int) {
+func (acc *Account) generatePassword(n int) {
 	password := make([]rune, n)
 	for i := 0; i < n; i++ {
-		password[i] = rand.Int32N(73) + 50 // от 50 символа до 123 включительно
+		password[i] = rand.Int32N(73) + 50 // from 50 to 123 symbols of utf-8
 	}
-	acc.password = string(password)
+	acc.Password = string(password)
 }
