@@ -16,6 +16,7 @@ func NewAccount(login, password, urlString string) (*Account, error) {
 	if login == "" {
 		return nil, errors.New("BLANK_LOGIN")
 	}
+	urlString = "https://" + urlString
 	_, err := url.ParseRequestURI(urlString)
 	if err != nil {
 		return nil, errors.New("INVALID_URL")
@@ -25,11 +26,9 @@ func NewAccount(login, password, urlString string) (*Account, error) {
 		Password: password,
 		Url:      urlString,
 	}
-
 	if password == "" {
 		newAcc.generatePassword(12)
 	}
-
 	return newAcc, nil
 }
 
